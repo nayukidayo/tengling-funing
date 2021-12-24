@@ -7,15 +7,15 @@ module.exports = async f => {
         params: {
           type: 'object',
           properties: {
-            topic: { type: 'string', maxLength: 12, minLength: 12 },
+            topic: { type: 'string', maxLength: 12 },
           },
           required: ['topic'],
         },
         body: {
           type: 'object',
           properties: {
-            key: { type: 'string', maxLength: 5, minLength: 5 },
-            value: { type: 'string', maxLength: 4, minLength: 4 },
+            key: { type: 'string', maxLength: 5 },
+            value: { type: 'string', maxLength: 4 },
           },
           required: ['key', 'value'],
         },
