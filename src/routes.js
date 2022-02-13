@@ -28,16 +28,13 @@ module.exports = async f => {
       const msg = `{"Data":{"${key}":"${value}"}}`
 
       await new Promise((res, rej) => {
-        f.mc.publish(`${topic}/s`, msg, err => {
+        f.mqTL.publish(`${topic}/s`, msg, err => {
           if (err) return rej(err)
           res()
         })
       })
 
-      return {
-        err: 0,
-        msg: '请求成功',
-      }
+      return { err: 0, msg: '请求成功' }
     }
   )
 }

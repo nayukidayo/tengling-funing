@@ -1,17 +1,26 @@
-const fastifyPlugin = require('fastify-plugin')
+const fp = require('fastify-plugin')
 const mqtt = require('mqtt')
 
-async function mqttConnector(f) {
-  const client = mqtt.connect({
+module.exports = fp(async f => {
+  const mqTL = mqtt.connect({
     host: 'mq.tenlink.com',
     port: 1883,
     username: 'admin@dlv',
     password: '123456',
   })
   await new Promise(res => {
-    client.on('connect', res)
+    mqTL.on('connect', res)
   })
-  f.decorate('mc', client)
-}
+  f.decorate('mqTL', mqTL)
 
-module.exports = fastifyPlugin(mqttConnector)
+  const mqFN = mqtt.connect({
+    host: '60.160.229.92',
+    port: 58002,
+    username: 'iot',
+    password: '123456',
+  })
+  await new Promise(res => {
+    mqFN.on('connect', res)
+  })
+  f.decorate('mqFN', mqFN)
+})
