@@ -1,18 +1,10 @@
 const PORT = process.env.PORT || 65507
 
-const path = require('path')
-const LOG = path.join(__dirname, '../error.log')
-
-const f = require('fastify')({
-  logger: {
-    level: 'error',
-    file: LOG,
-  },
-})
+const f = require('fastify')({ logger: { level: 'warn' } })
 
 f.setErrorHandler(async (err, req, res) => {
-  // console.log(req.method, req.url, err)
   if (err.validation) {
+    f.log.warn(err)
     res.code(400)
     return { err: 4001, msg: err.message }
   }
@@ -24,7 +16,6 @@ f.setErrorHandler(async (err, req, res) => {
 !(async () => {
   try {
     await f.register(require('./mqtt'))
-    await f.register(require('./helper'))
     await f.register(require('./routes'), { prefix: '/api/v1' })
     await f.listen(PORT, '0.0.0.0')
   } catch (err) {

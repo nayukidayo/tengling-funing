@@ -28,7 +28,7 @@ module.exports = async f => {
       const msg = `{"Data":{"${key}":"${value}"}}`
 
       await new Promise((res, rej) => {
-        f.mqTL.publish(`${topic}/s`, msg, err => {
+        f.mqTL.publish(`${topic}/s`, msg, { qos: 1 }, err => {
           if (err) return rej(err)
           res()
         })
